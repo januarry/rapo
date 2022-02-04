@@ -1,0 +1,2816 @@
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: TMSAppConnector
+  description: >-
+    TMSAppConnector manages ISV integrations
+  contact:
+    email: maheshkumar.g@varsitymgmt.com
+produces:
+  - application/json
+basePath: /api/v1
+schemes:
+- "https"
+tags:
+  
+  - name: TeacherHomework
+    description: Operations on Teacher Homework
+    
+  - name: assignStudentsForHomework
+    description: Operations on assign Students For Homework  view 
+    
+  - name: CreateOwnSection
+    description: Operations on TeacherCreateOwn  section in Homework 
+    
+  - name: CreateOwnAssignmentTest
+    description: Operations on CreateOwn  Assignment Questions
+    
+  - name: CreateOwnLibrary
+    description: Operations on  CreateOwn  teacherQuestionLibrary 
+  
+  - name: TeacherHomeworkEvaluation
+    description: Operations on  TeacherHomeworkEvaluation
+    
+    
+  - name: AssignmentTestResponse
+    description: Operations on  AssignmentTestResponse  for   StudentHomeworkEvaluationAuto 
+ 
+    
+  
+securityDefinitions:
+       Bearer:
+        type: apiKey
+        name: Authorization
+        in: header
+paths:
+  /teacherHomeworkCreation:
+    post:
+      summary: Teacher Create Homework
+      tags:
+        - TeacherHomework
+      operationId: createHomework
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Create Homework"
+        required: true
+        schema:
+          $ref: "#/definitions/CreationHomework"
+      responses:
+        200:
+          description: "Successfully created Homework"
+          schema:
+             $ref: '#/definitions/HomeworkCreationResponse'
+        400:
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error'
+        500:
+          description: Internal Server error
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - Bearer: []
+        
+  /updateHomework:
+    put:
+      summary: Teacher Update Homework
+      tags:
+        - TeacherHomework
+      operationId: updateHomework
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Create Homework"
+        required: true
+        schema:
+          $ref: "#/definitions/UpdateHomework"
+      responses:
+        200:
+          description: "Successfully created Homework"
+          schema:
+             $ref: '#/definitions/Response'
+        400:
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error'
+        500:
+          description: Internal Server error
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - Bearer: []
+        
+  /deleteHomework:
+    put:
+      summary: Teacher Delete Homework
+      tags:
+        - TeacherHomework
+      operationId: deleteHomework
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "homeworkId"
+        in: "query"
+        description: "Homework Id for Deletion"
+        required: true
+        type: "string"
+      
+      responses:
+        200:
+          description: "Successfully Deleted Homework"
+          schema:
+             $ref: '#/definitions/Response'
+        400:
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error'
+        500:
+          description: Internal Server error
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - Bearer: []
+  
+  
+  /assignStudentsForHomeworkView:
+    get:
+      summary: Teacher will Assign Homework to List of Students. 
+      tags:
+        - TeacherHomework
+      operationId: assignStudentsForHomeworkView
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+       - in: query
+         name: homeworkId
+         type: integer
+         required: true
+        
+      responses:
+        200:
+          description: Ok
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/studentsHomeworkView'
+        400:
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error'
+        500:
+          description: Internal Server error
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - Bearer: []  
+        
+  /teacherUploadingHomework:
+    post:
+      summary: Upload homework File by homework uuid
+      operationId: uploadHomeworkByUuid
+      tags:
+        - TeacherHomework
+      consumes:
+        - multipart/form-data
+      parameters:
+        - in: query
+          name: homeworkId
+          type: integer
+          required: true
+        - in: query
+          name: description
+          type: string
+          required: false
+        - in: formData
+          name: file[]
+          type: file
+          required: false
+      responses:
+        200:
+          description: Ok
+              
+        400:
+          description: Bad request
+          schema:
+            $ref: '#/definitions/Error'
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Error'
+      
+      security:
+        - Bearer: []     
+        
+        
+  /teacherDeleteHomeworkfiles:
+    delete:
+      summary: Delete homework by homework uuid
+      operationId: deleteHomeworkByUuid
+      tags:
+        - TeacherHomework
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: query
+          name: homeworkfileId
+          type: integer
+          required: true
+
+      responses:
+        200:
+          description: Ok
+              
+        400:
+          description: Bad request
+          schema:
+            $ref: '#/definitions/Error'
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - Bearer: []  
+  
+  /getAllHomeworks:
+    get:
+      summary: Get All Homeworks
+      tags:
+        - TeacherHomework
+      operationId: getAllHomeworks
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: Ok
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/HomeworkList'
+        400:
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error'
+        500:
+          description: Internal Server error
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - Bearer: []
+        
+  
+  /assignStudentsForHomework:
+    post:
+      summary: Assign Students For Homework
+      tags:
+        - assignStudentsForHomework
+      operationId: assignStudentsForHomework
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Assign Students For Homework"
+        required: true
+        schema:
+          $ref: "#/definitions/AssignStudentsForHomework"
+      responses:
+        200:
+          description: "Successfully Assigned Students"
+          schema:
+             $ref: '#/definitions/Response'
+        400:
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error'
+        500:
+          description: Internal Server error
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - Bearer: []
+        
+  /getStudentHomeworkEvaluationList:
+    get:
+      summary: Student Homework List
+      tags:
+        - TeacherHomeworkEvaluation
+      operationId: getStudentHomeworkEvaluationList
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "homeworkId"
+        in: "query"
+        description: "Homework Id for Evaluation"
+        required: true
+        type: "integer"
+        format: "int64"
+        
+      responses:
+        200:
+          description: "ok"
+          schema:
+             $ref: '#/definitions/StudentHomeworkEvaluationList'
+        400:
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error'
+        500:
+          description: Internal Server error
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - Bearer: []
+  
+  /getStudentHomeworkEvaluation:
+    get:
+      summary: Student Wise Homework Evalution
+      tags:
+        - TeacherHomeworkEvaluation
+      operationId: getStudentHomeworkEvaluation
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "homeworkId"
+        in: "query"
+        description: "Homework Id for Evaluation"
+        required: true
+        type: "integer"
+        format: "int64"
+      - name: "admNo"
+        in: "query"
+        description: "Student Admission Number"
+        required: true
+        type: "string"
+        
+        
+      responses:
+        200:
+          description: "ok"
+          schema:
+             $ref: '#/definitions/StudentHomeworkEvaluation'
+        400:
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error'
+        500:
+          description: Internal Server error
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - Bearer: []
+  
+  /getStudentHomeworkSubmissions:
+    get:
+      summary: Student Wise Homework Submissions 
+      tags:
+        - TeacherHomeworkEvaluation
+      operationId: getStudentHomeworkSubmissions
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "homeworkId"
+        in: "query"
+        description: "Homework Id for Evaluation"
+        required: true
+        type: "integer"
+        format: "int64"
+      
+      
+      responses:
+        200:
+          description: "ok"
+          schema:
+             $ref: '#/definitions/StudentHomeworkSubmissions'
+        400:
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error'
+        500:
+          description: Internal Server error
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - Bearer: []
+        
+        
+        
+  /studentHomeworkEvaluation:
+    post:
+      summary: Student Submited Homework Evaluation
+      tags:
+        - TeacherHomeworkEvaluation
+      operationId: studentHomeworkEvaluation
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "homeworkId"
+        in: "query"
+        description: "Homework Id for Evaluation"
+        required: true
+        type: "integer"
+        format: "int64"
+        
+      responses:
+        200:
+          description: "Successfully Evaluation Completed"
+          schema:
+             $ref: '#/definitions/Response'
+        400:
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error'
+        500:
+          description: Internal Server error
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - Bearer: []
+        
+  
+  /homeworkViewSubmission:
+      get:
+        tags:
+        - TeacherHomeworkEvaluation
+        summary: "This API fetches the details of students who submitted & not submitted Assignment. "
+        produces:
+        - "application/json"
+        parameters:
+        - name: "Status"
+          in: "query"
+          description: "Student values that need to be considered for filter"
+          required: true
+          type: "array"
+          items:
+            type: "string"
+            enum:
+            - "All"
+            - "Submitted"
+            - "Not Submitted"
+           
+            default: "All"
+          collectionFormat: "multi"
+        responses:
+            "200":
+              description: "successful operation"
+              schema:
+                type: "array"
+                items:
+                 $ref: "#/definitions/homeworkSubmissionEvaluation"
+            400:
+              description: Bad request
+              schema:
+                $ref: '#/definitions/Error'
+            404:
+              description: Not Found
+              schema:
+               $ref: '#/definitions/Error'
+            500:
+              description: Internal Server Error
+              schema:
+                $ref: '#/definitions/Error'
+        security:
+        - Bearer: []
+        
+  
+  /hmViewSubmission:
+      get:
+        tags:
+        - TeacherHomeworkEvaluation
+        summary: "This API fetches the details of students who submitted & not submitted Assignments along with their uploaded files.  "
+        
+        responses:
+            "200":
+              description: "successful operation"
+              schema:
+                type: "array"
+                items:
+                 $ref: "#/definitions/hmSubmissionEvaluation"
+            400:
+              description: Bad request
+              schema:
+                $ref: '#/definitions/Error'
+            404:
+              description: Not Found
+              schema:
+               $ref: '#/definitions/Error'
+            500:
+              description: Internal Server Error
+              schema:
+                $ref: '#/definitions/Error'
+        security:
+        - Bearer: []
+  
+  /setUploadedFileComments:
+    post:
+      summary: set Uploaded File Comments
+      tags:
+        - TeacherHomeworkEvaluation
+      operationId: setUploadedFileComments
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "homeworkFileId"
+        in: "query"
+        description: "Homework File Id for Comment"
+        required: true
+        type: "integer"
+        format: "int64"
+      - name: "comments"
+        in: "query"
+        description: "Homework File Comment"
+        required: true
+        type: "string"
+        
+        
+      responses:
+        200:
+          description: "Successfully Done"
+          schema:
+             $ref: '#/definitions/StudentUploadFileCommentResponse'
+        400:
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error'
+        500:
+          description: Internal Server error
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - Bearer: []
+        
+        
+  /deleteUploadedFileComments:
+    put:
+      summary: delete Uploaded File Comments
+      tags:
+        - TeacherHomeworkEvaluation
+      operationId: deleteUploadedFileComments
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "homeworkFileCommentId"
+        in: "query"
+        description: "Student UploadFile Comment ID"
+        required: true
+        type: "integer"
+        format: "int64"
+        
+      responses:
+        200:
+          description: "Successfully Done"
+          schema:
+             $ref: '#/definitions/Response'
+        400:
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error'
+        500:
+          description: Internal Server error
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - Bearer: []
+        
+  /setStudentHomeworkRemarks:
+    post:
+      summary: set Student Homework Remarks
+      tags:
+        - TeacherHomeworkEvaluation
+      operationId: setStudentHomeworkRemarks
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "assignmentId"
+        in: "query"
+        description: "Student Assignment Id for Remarks"
+        required: true
+        type: "integer"
+        format: "int64"
+      - name: "remarks"
+        in: "query"
+        description: "Homework Remarks"
+        required: true
+        type: "string"
+      - name: "marks"
+        in: "query"
+        description: "Homework marks"
+        required: true
+        type: number
+        format: float
+        
+        
+      responses:
+        200:
+          description: "Successfully Done"
+          schema:
+             $ref: '#/definitions/Response'
+        400:
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error'
+        500:
+          description: Internal Server error
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - Bearer: []
+  
+
+  /teacherPublishHomework:
+    put:
+      summary: Publish homework by homework uuid
+      operationId: publishHomeworkByUuid
+      tags:
+        - TeacherHomework
+      consumes:
+        - multipart/form-data
+      parameters:
+        - in: query
+          name: homeworkId
+          type: integer
+          required: true
+      responses:
+        200:
+          description: Ok
+              
+        400:
+          description: Bad request
+          schema:
+            $ref: '#/definitions/Error'
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Error'  
+      security:
+        - Bearer: []  
+
+  
+        
+  /createSection:
+    post:
+      summary: creating section for adding questions 
+      tags:
+        - CreateOwnSection
+      operationId: createSection
+      parameters:
+        - in: query
+          name: homeWorkId
+          type: integer
+          required: true
+        - in: query
+          name: sectionName
+          type: string
+          required: true  
+        
+      responses:
+        200:
+          description: success
+          
+        400:
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error'
+        500:
+          description: Internal Server error
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - Bearer: []
+        
+        
+  /createAssignmentQuestions:
+    post:
+      summary: creating Assignment Questions
+      tags:
+        - CreateOwnAssignmentTest
+      operationId: createAssignmentQuestions
+      parameters:
+        - in: query
+          name: questionId
+          type: array
+          items:
+            type: integer
+          required: true
+        - in: query
+          name: is_mylibrary
+          type: boolean
+          required: true
+        - in: query
+          name: assignmentSectionId 
+          type: integer
+          format: int64
+          required: true
+        
+      responses:
+        200:
+          description: "Successfully Created Assignment Questions"
+          schema:
+             $ref: '#/definitions/Response'
+         
+        400:
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error'
+        500:
+          description: Internal Server error
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - Bearer: []
+        
+  /editSection:
+    put:
+      summary: editing section for adding questions 
+      tags:
+        - CreateOwnSection
+      operationId: editSection
+      parameters:
+        - in: query
+          name: Id
+          type: integer
+          required: true
+        - in: query
+          name: sectionName
+          type: string
+          required: true  
+        
+      responses:
+        200:
+          description: success
+          
+          
+        400:
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error'
+        500:
+          description: Internal Server error
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - Bearer: []
+
+  /sectionMarks:
+    put:
+      summary: section Marks
+      tags:
+        - CreateOwnSection
+      operationId: sectionMarks
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+        - in: query
+          name: sectionId
+          type: integer
+          format: int64
+          required: true
+        - in: query
+          name: positiveMarks
+          type: number
+          format: float
+          required: true
+        - in: query
+          name: negativeMarks
+          type: number
+          format: float
+          required: true  
+          
+        
+      responses:
+        200:
+          description: Ok
+          
+        400:
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error'
+        500:
+          description: Internal Server error
+          schema:
+            $ref: '#/definitions/Error' 
+      security:
+        - Bearer: []                     
+            
+  /deleteSection:
+    delete:
+      summary: delete section for adding questions 
+      tags:
+        - CreateOwnSection
+      operationId: delete Section
+      parameters:
+        - in: query
+          name: Id
+          type: integer
+          required: true          
+      responses:
+        200:
+          description: success
+          
+        400:
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error'
+        500:
+          description: Internal Server error
+          schema:
+            $ref: '#/definitions/Error' 
+      security:
+        - Bearer: []
+        
+  /getSections:
+    get:
+      summary: Get sections
+      tags:
+        - CreateOwnSection
+      operationId: assignmentSections
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+        - in: query
+          name: homeWorkId
+          type: integer
+          format: int64
+          required: true 
+        
+      responses:
+        200:
+          description: Ok
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/SectionList'
+        400:
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error'
+        500:
+          description: Internal Server error
+          schema:
+            $ref: '#/definitions/Error'       
+      security:
+        - Bearer: []
+  /questionMarks:
+    put:
+      summary: Questionmarks
+      tags:
+        - CreateOwnAssignmentTest
+      operationId: marksQuestion
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "sectionId"
+        in: "query"
+        required: true
+        type: "integer"
+        format: "int64" 
+      - name: "positiveMarks"
+        in: "query"
+        required: true
+        type: "string"
+      - name: "negativeMarks"
+        in: "query"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: Ok
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/QuestionMarksresponse'
+        400:
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error'
+        500:
+          description: Internal Server error
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - Bearer: []
+  /questionDelete:
+    put:
+      summary: questionDelete
+      tags:
+        - CreateOwnAssignmentTest
+      operationId: questionDelete
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "questionId"
+        in: "query"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        200:
+          description: Ok
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/QuestionDeleteresponse'
+        400:
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error'
+        500:
+          description: Internal Server error
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - Bearer: []
+  
+  /getAssignmentfileComments:
+    get:
+      summary: Assignment file Comments
+      tags:
+        - TeacherHomeworkEvaluation
+      operationId: assignment file comments
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: query
+          name: assignmentfileId
+          type: integer
+          required: true
+      responses:
+        200:
+          description: Ok
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/fileComments'
+        400:
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error'
+        500:
+          description: Internal Server error
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - Bearer: []
+        
+  /deletefilecomments:
+    delete:
+      summary: delete file wise comments
+      tags:
+        - TeacherHomeworkEvaluation
+      operationId: delete comments
+      parameters:
+        - in: query
+          name: assignmentfileId
+          type: integer
+          required: true        
+      responses:
+        200:
+          description: success
+          
+        400:
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error'
+        500:
+          description: Internal Server error
+          schema:
+            $ref: '#/definitions/Error' 
+      security:
+        - Bearer: []
+        
+  /getStudentResponseAssignmentTest:
+    get:
+      summary: take studnet assignment test
+      operationId: getStudentResponseAssignmentTest
+      tags:
+        - AssignmentTestResponse
+      parameters:
+        - in: query
+          name: studentAssignmentId
+          type: "integer"
+          format: "int64"
+          required: true
+      responses:
+        200:
+          description: Ok
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/assignmentTestPaper"
+      security:
+        - Bearer: []    
+        
+  /getHomeworkAssignmentTest:
+    get:
+      summary: take homework assignment test
+      operationId: getHomeworkAssignmentTest
+      tags:
+        - AssignmentTestResponse
+      parameters:
+        - in: query
+          name: homeworkId
+          type: "integer"
+          format: "int64"
+          required: true
+      responses:
+        200:
+          description: Ok
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/assignmentTestPaper"
+      security:
+        - Bearer: []
+        
+  /teacherQuestionLibrary:
+    post:
+      summary: Assign Students For Homework
+      tags:
+        - CreateOwnLibrary
+      operationId: teacherQuestionLibrary
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "teacherQuestionLibrary"
+        required: true
+        schema:
+          $ref: "#/definitions/teacherQuestionLibraryInfo"
+      responses:
+        200:
+          description: "Successfully Created Library"
+          schema:
+             $ref: '#/definitions/Response'
+        400:
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error'
+        500:
+          description: Internal Server error
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - Bearer: []
+  /getTeacherQuestionLibrary:
+    get:
+      summary: getTeacherQuestionLibrary
+      operationId: getTeacherQuestionLibrary
+      tags:
+        - CreateOwnLibrary
+      parameters:
+        - in: query
+          name: teacherId
+          type: "string"
+          required: true
+      responses:
+        200:
+          description: Ok
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/teacherQuestionLibraryInfo"
+      security:
+        - Bearer: []
+  /updateTeacherQuestionLibrary:   
+    patch:
+       tags:
+       - CreateOwnLibrary
+       summary: "To update QuestionLibrarys"
+       operationId: "updateTeacherQuestionLibrary"
+       produces:
+       - "application/json"
+       parameters:
+       - in: body
+         name: "updateTeacherQuestionLibrary"
+         required: true
+         description: "To updateTeacherQuestionLibrary"
+         schema:
+           $ref: "#/definitions/getTeacherQuestionLibraryInfo"
+       security:
+       - Bearer: []    
+       responses:
+         "200":
+           description: "Successful operation"
+           schema:
+              $ref: "#/definitions/Response"
+         "404":
+           description: "Question details not available"   
+            
+  /deleteHomeworkFile:
+    put:
+      summary: Teacher Delete Homework File
+      tags:
+        - TeacherHomework
+      operationId: deleteHomeworkFile
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "homeworkfileId"
+        in: "query"
+        description: "Homework file Id for Deletion"
+        required: true
+        type: "string"
+      
+      responses:
+        200:
+          description: "Successfully Deleted Homework"
+          schema:
+             $ref: '#/definitions/Response'
+        400:
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error'
+        500:
+          description: Internal Server error
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - Bearer: []  
+        
+        
+        
+definitions:
+
+  QuestionDeleteresponse:
+    type: object
+    properties:
+      message:
+        type: string
+        default: " question deleted Sucessfully"
+      status:
+        type: string
+        default: "Sucess"
+        
+  QuestionMarksresponse:
+    type: object
+    properties:
+      message:
+        type: string
+        default: " marks added to question Sucessfully"
+      status:
+        type: string
+        default: "Sucess"
+        
+  SectionList:
+    type: "object"
+    properties:
+      section:
+        type: array
+        items:
+          type: object
+          properties:
+            sectionId:
+              type: integer
+              format: int64
+            sectionName:
+              type: string
+            positiveMarks:
+              type: number
+              format: "float"
+            negativeMarks:
+              type: number
+              format: "float"
+              
+  Response:
+    type: "object"
+    properties:
+      success:
+          type: string
+      message:
+          type: string
+  HomeworkCreationResponse:
+    type: "object"
+    properties:
+      success:
+          type: string
+      message:
+          type: string
+      homeworkId:
+          type: integer
+          format: int64
+  
+  
+  StudentUploadFileCommentResponse:
+    type: "object"
+    properties:
+      success:
+          type: string
+      message:
+          type: string
+      uploadFileCommentId:
+          type: integer
+          format: int64
+          
+  AssignStudentsForHomework:
+    type: "object"
+    properties:
+      homeworkId:
+        type: integer
+        format: int64
+        description: Homework Id
+      studentAssignList:
+        type: array
+        description: students assignment for homework
+        
+        items:
+          title: studentAssignList
+          description: students for homework assign
+          type: object
+          properties:
+            studentAdmNo:
+              type: string
+              description: Student Adm No
+      studentUnassignList:
+        type: array
+        items:
+          title: studentUnassignList
+          type: object
+          properties:
+            studentAdmNo:
+              type: string              
+  createStudentAssignmentQuestion:
+    type: "object"
+    properties:
+      correct:
+        type: boolean
+        description: question answer correct
+      clearResponse:
+        type: boolean
+        description: clear Response
+      markForReview:
+        type: boolean
+        description: mark for review
+      response:
+        type: string
+        description: response
+      assignmentQuestionId:
+        type: integer
+        format: int64
+        description: assignmentQuestionId
+      studentAssignmentId:
+        type: integer
+        format: int64
+        description: studentAssignmentId
+      isVisited:
+        type: boolean
+        description: isVisited
+      questionGap:
+        type: integer
+        format: int64
+        description: questionGap
+      attemptedTime:
+        type: string
+        description: attemptedTime
+    xml:
+      name: "createStudentAssignmentQuestion"
+      
+      
+  CreationHomework:
+    type: "object"
+    properties:
+      homeworkName:
+        type: string
+        description: Homework Name
+      homeworkTitle:
+        type: string
+        description: Homework title
+      
+      subject:
+        type: "string"
+        default: Physics
+        description: Subject Name
+      subjectId:
+        type: "integer"
+        format: "int64"
+        description: Subject Id
+      
+      startDate:
+        type: "string"
+        description: Start Date
+      endDate:
+        type: "string"
+        description: End Date
+      evaluationStartDate:
+        type: "string"
+        description: evaluation Start Date
+      evaluationEndDate:
+        type: "string"
+        description: evaluation End Date
+      teacherRemarks:
+        type: "string"
+        description: teacher remarks
+      submission:
+        type: "string"
+        description: Submission Type
+        enum:
+        - "Required"
+        - "Not Required"
+      evaluation:
+        type: "string"
+        description: evaluation Type
+        enum:
+        - "Required"
+        - "Not Required"
+      totalMarks:
+        type: "integer"
+        format: "int32"
+        description: Total marks for Homework
+        
+      saveInDrafts:
+        type: "boolean"
+        default: false
+      homeworkId:
+        type: "integer"
+        format: "int64"
+        description: Homework Id
+      studentBatchs:
+        type: array
+        description: students batchs for homework
+        
+        items:
+          title: studentBatch
+          description: student batch for homework create
+          type: object
+          properties:
+            batchId:
+              type: integer
+              format: int64
+              description: Student Batch Id
+            batchName:
+              type: string
+              description: Student Batch Name
+      studentBranchs:
+        type: array
+        description: students branches for homework
+        
+        items:
+          title: studentBranch
+          description: student Branch for homework create
+          type: object
+          properties:
+            branchId:
+              type: integer
+              format: int64
+              description: Student Branch Id
+            branchName:
+              type: string
+              description: Student Branch Name
+      studentPrograms:
+        type: array
+        description: students programs for homework
+        
+        items:
+          title: studentProgram
+          description: student program for homework create
+          type: object
+          properties:
+            programId:
+              type: integer
+              format: int64
+              description: Student program Id
+            programName:
+              type: string
+              description: Student program Name
+      studentSections:
+        type: array
+        description: students sections for homework
+        items:
+          title: studentSection
+          description: student section for homework create
+          type: object
+          properties:
+            sectionId:
+              type: integer
+              format: int64
+              description: Student section Id
+            sectionName:
+              type: string
+              description: Student section Name
+            classId:
+              type: integer
+              format: int64
+              description: Student Class Id
+            className:
+              type: string
+              description: Student Class Name
+    xml:
+      name: "HomeworkCreation"
+  UpdateHomework:
+    type: "object"
+    properties:
+      homeworkId:
+        type: "integer"
+        format: "int64"
+        description: homework Id  
+      homeworkName:
+        type: string
+        description: Homework Name
+      classId:
+        type: "integer"
+        format: "int64"
+        description: Class Id
+      section:
+        type: "integer"
+        format: "int64"
+        description: Section Id
+      subject:
+        type: "string"
+        default: Physics
+        description: Subject Name
+      programId:
+        type: "integer"
+        format: "int64"
+        description: Program Id
+      branchId:
+        type: "integer"
+        format: "int64"
+        description: Branch Id
+      batchId:
+        type: "integer"
+        format: "int64"
+        description: Batch Id
+      startDate:
+        type: "string"
+        format: "date-time"
+        description: Start Date
+      endDate:
+        type: "string"
+        format: "date-time"
+        description: End Date
+      submission:
+        type: "string"
+        description: "Submission Type"
+        enum:
+        - "Required"
+        - "Not Required"
+      evaluation:
+        type: "string"
+        description: "evaluation Type"
+        enum:
+        - "Required"
+        - "Not Required"
+      totalMarks:
+        type: "integer"
+        format: "int32"
+        description: Total marks for Homework
+      saveInDrafts:
+        type: "boolean"
+        default: false
+    xml:
+      name: "HomeworkCreation"
+  HomeworkList:
+      type: object
+      properties:
+       homeworkListType:
+         type: string
+         description: Homework List Type(Ongoing,Upcoming ,past,Draft)
+       homeworkList:
+        type: array
+        description: list of homework
+        items:
+          title: homework
+          description: specific homework details
+          type: object
+          properties:
+            homeworkId:
+              type: integer
+              format: int64
+              description: Homework Id
+            homeworkName:
+              type: string
+              description: Homework Name
+            homeworkType:
+              type: string
+              description: Homework Type Offline or online
+            evalution:
+              type: string
+              description: Homework evalution
+            totalMarks:
+              type: integer
+              format: "int32"
+              description: Homework TotalMarks
+            subjectId:
+              type: integer
+              format: "int64"
+              description: Homework Subject Id
+            subject:
+              type: string
+              description: Homework Subject
+            startDate:
+              type: string
+              description: Homework Start Date
+            endDate:
+              type: string
+              description: Homework End Date
+            status:
+              type: string
+              description: Homework Status
+            submission:
+              type: string
+              description: Homework Submission Required
+            publish:
+              type: string
+              format: "boolean"
+              description: Homework Publish
+            active:
+              type: string
+              format: "boolean"
+              description: Homework active
+            upcomingMessage:
+              type: string
+              description: Homework Upcoming Message
+            createdBy:
+              type: string
+              description: Homework Draft CreatedBy
+            
+            studentBatchs:
+             type: array
+             description: students batchs for homework
+        
+             items:
+              title: studentBatch
+              description: student batch for homework create
+              type: object
+              properties:
+               batchId:
+                type: integer
+                format: int64
+                description: Student Batch Id
+               batchName:
+                type: string
+                description: Student Batch Name
+            studentBranchs:
+             type: array
+             description: students branches for homework
+        
+             items:
+              title: studentBranch
+              description: student Branch for homework create
+              type: object
+              properties:
+                branchId:
+                 type: integer
+                 format: int64
+                 description: Student Branch Id
+                branchName:
+                 type: string
+                 description: Student Branch Name
+            studentClasses:
+             type: array
+             description: students classes for homework
+        
+             items:
+              title: studentClass
+              description: student class for homework create
+              type: object
+              properties:
+               classId:
+                type: integer
+                format: int64
+                description: Student Class Id
+               className:
+                type: string
+                description: Student Class Name
+              
+            studentPrograms:
+             type: array
+             description: students programs for homework
+        
+             items:
+              title: studentProgram
+              description: student program for homework create
+              type: object
+              properties:
+                programId:
+                 type: integer
+                 format: int64
+                 description: Student program Id
+                programName:
+                 type: string
+                 description: Student program Name
+            
+  StudentHomeworkEvaluationList:
+      type: object
+      properties:
+      
+       homeworkListType:
+         type: string
+         description: Homework List Type(Submited,Not Submited)
+       listCount:
+              type: integer
+              format: int32
+              description: Homework List Type Count
+      
+       studentsList:
+        type: array
+        description: homework attmpted or submited students list
+        
+        items:
+          title: HomeworkStudentList
+          description: student Homework Evaluation details
+          type: object
+          properties:
+            assignmentId:
+                  type: integer
+                  format: int64
+                  description: Student Assignment Id
+            studentName:
+              type: string
+              description: Student Name
+            studentAdmNo:
+              type: string
+              description: Student Admission number
+            grade:
+              type: string
+              description: Student Grade
+            gradeId:
+              type: integer
+              format: "int64"
+              description: Student Grade Id
+            orientation:
+              type: string
+              description: Student Orientation
+            orientationId:
+              type: integer
+              format: "int64"
+              description: Student Orientation Id
+            
+            batch:
+              type: string
+              description: Student Batch
+  StudentHomeworkEvaluation:
+      type: object
+      properties:
+      
+       homeworkTotalMarks:
+         type: integer
+         format: int32
+         description: total marks for homework
+       submittedDate:
+              type: string
+              format: "date-time"
+              description: Student Homework submited date    
+          
+       studentUploadedFiles:
+              type: array
+              description: Assignment Uploaded Files
+              items:
+                title: StudentAssignmentFiles
+                description: Assignment Uploaded File
+                type: object
+                properties:
+                 fileLocation:
+                  type: string
+                  description: Assignment File Location
+                 fileCreatedOn:
+                  type: string
+                  description: Assignment File CreatedOn
+                  pattern: /([0-9]{2})-(?:[0-9]{2})-([0-9]{4}) ([0-9]{2}):([0-9]{2})/
+                  example: "17-05-2019 11:00"
+                 fileSize:
+                  type: number
+                  format: float
+                  description: Assignment File Size
+                 fileType:
+                  type: string
+                  description: Assignment File Type
+                 fileUpdatedOn:
+                  type: string
+                  description: Assignment File UpdatedOn
+                  pattern: /([0-9]{2})-(?:[0-9]{2})-([0-9]{4}) ([0-9]{2}):([0-9]{2})/
+                  example: "17-05-2019 11:00"
+                 fileId:
+                  type: integer
+                  format: int64
+                  description: Assignment File Id
+                 stuAsignmentId:
+                  type: integer
+                  format: int64
+                  description: stuAsignmentId
+              
+  StudentHomeworkSubmissions:
+      type: object
+      properties:
+      
+       homeworkName:
+         type: string
+         description: Homework Name
+       startDate:
+              type: string
+              description: Homework Start Date
+       endDate:
+              type: string
+              description: Homework End Date
+       subjectId:
+              type: integer
+              format: "int64"
+              description: Homework Subject Id
+       subject:
+              type: string
+              description: Homework Subjec
+       
+       studentCount:
+              type: integer
+              format: int32
+              description: Homework Students Count
+       homeworkAbout:
+              type: string
+              description: Homework About
+       studentClasses:
+        type: array
+        description: students classes for homework
+        
+        items:
+          title: studentClass
+          description: student class for homework create
+          type: object
+          properties:
+            classId:
+              type: integer
+              format: int64
+              description: Student Class Id
+            className:
+              type: string
+              description: Student Class Name
+      
+       studentsList:
+        type: array
+        description: homework attmpted or submited students list
+        
+        items:
+          title: HomeworkStudentsView
+          description: student Homework Evaluation details
+          type: object
+          properties:
+            assignmentId:
+                  type: integer
+                  format: int64
+                  description: Student Assignment Id
+            studentName:
+              type: string
+              description: Student Name
+            submissionDate:
+                  type: string
+                  description: student submission date
+                  pattern: /([0-9]{2})-(?:[0-9]{2})-([0-9]{4}) ([0-9]{2}):([0-9]{2})/
+                  example: "17-05-2019 11:00"
+            status:
+              type: string
+              description: Student Submission status(submited,not submited,evaluated)
+            evaluationStatus:
+              type: string
+              description: Student Evaluation Status(Done,Not Done yet)
+            marksObtained:
+              type: string
+              description: Student Marks Obtained
+       homeworkFiles:
+              type: array
+              description: Assignment Teacher Uploaded Files
+              items:
+                title: TeacherAssignmentFiles
+                description: Teacher Assignment Uploaded File
+                type: object
+                properties:
+                 fileLocation:
+                  type: string
+                  description: Assignment File Location
+                 fileCreatedOn:
+                  type: string
+                  description: Assignment File CreatedOn
+                  pattern: /([0-9]{2})-(?:[0-9]{2})-([0-9]{4}) ([0-9]{2}):([0-9]{2})/
+                  example: "17-05-2019 11:00"
+                 fileSize:
+                  type: number
+                  format: float
+                  description: Assignment File Size
+                 fileType:
+                  type: string
+                  description: Assignment File Type
+                 fileUpdatedOn:
+                  type: string
+                  description: Assignment File UpdatedOn
+                  pattern: /([0-9]{2})-(?:[0-9]{2})-([0-9]{4}) ([0-9]{2}):([0-9]{2})/
+                  example: "17-05-2019 11:00"
+                 fileId:
+                  type: integer
+                  format: int64
+                  description: Assignment File Id
+                       
+      
+  hmSubmissionEvaluation:
+    type: object
+    
+    
+    properties:     
+      submitted:
+         type: array
+         description: list of students who submitted  Assignment with count and names.
+         items:
+          title: All Assignmnet details
+          description: All Assignmnet details
+          type: object
+          properties:
+            count:
+              type: integer
+              default: 12
+              
+            Name:
+              type: string  
+              default: Rashmi Naik
+            Rashmi Naik:
+              type: array
+              items:
+                type: object
+                properties: 
+                  uploaded files:
+                    type: string
+                    default: uploaded files
+                  Comments:
+                     type: string
+                     default: 1.Overall looks good to me,
+                              Nice Images
+                  Remarks:
+                     type: string
+                     default: Good work.needs Improvement in vocabulary
+                  submissionResult:
+                     type: string
+                     default: Accept submission
+                  
+                  marks obtained:
+                    type: integer
+                    default: 25                     
+                
+      Not submitted:
+         type: array
+         description: list of students who not submitted  Assignment with count and names.
+         items:
+          title: All Assignmnet details
+          description: All Assignmnet details
+          type: object
+          properties:
+            count:
+              type: integer
+              default: 103
+              
+            Name:
+              type: string  
+              default: Rashmi     
+  homeworkSubmissionEvaluation:
+    type: object
+    
+    
+    properties:     
+      ALL:
+         type: array
+         description: list of students who submitted and not submitted Assignmnet
+         items:
+          title: All Assignmnet details
+          description: All Assignmnet details
+          type: object
+          properties:
+            Students:
+              type: string
+              default: David Dsouza
+              
+            Submission Date/Time:
+              type: string  
+              default: 15 Nov,2020 
+            Status:
+              type: string
+              default: Submitted
+            EvaluationStatus:
+              type: string
+              default: Done
+            MarksObtained:
+              type: string
+              default: 15/20
+      
+      Submitted:
+         type: array
+         description: list of students who submitted  Assignmnet
+         items:
+          title: All Assignmnet details
+          description: All Assignmnet details
+          type: object
+          properties:
+            Students:
+              type: string
+              default: David Dsouza
+              
+            Submission Date/Time:
+              type: string  
+              default: 15 Nov,2020 
+            Status:
+              type: string
+              default: Submitted
+            EvaluationStatus:
+              type: string
+              default: Done
+            MarksObtained:
+              type: string   
+      NotSubmitted:
+         type: array
+         description: list of students who not submitted Assignmnet
+         items:
+          title: All Assignmnet details
+          description: All Assignmnet details
+          type: object
+          properties:
+            Students:
+              type: string
+              default: Hema Choudary
+              
+            Submission Date/Time:
+              type: string  
+              default: _
+            Status:
+              type: string
+              default: Not Submitted
+            EvaluationStatus:
+              type: string
+              default: _
+            MarksObtained:
+              type: string
+              default: _
+
+  studentsHomeworkView:
+      type: object
+      properties:
+      
+       assignStudents:
+        type: array
+        description: Homework view(students,About,Questions)
+
+        items:
+          title: assignStudents
+          description: students for homework assign
+          type: object
+          properties:
+            nameAndAdmNo:
+              type: string
+              description: nameAndAdmNo
+            admNo:
+              type: string
+              description: Adm No
+            name:
+              type: string
+              description: Name  
+            submissionDate:
+              type: string
+            status:
+              type: string
+            evaluationStatus:
+              type: string  
+            marksObtained:
+               type: number
+               format: float
+       studentBranchs:
+             type: array
+             description: students branches for homework
+        
+             items:
+              title: studentBranch
+              description: student Branch for homework create
+              type: object
+              properties:
+                branchId:
+                 type: integer
+                 format: int64
+                 description: Student Branch Id
+                branchName:
+                 type: string
+                 description: Student Branch Name
+       studentClasses:
+             type: array
+             description: students classes for homework
+        
+             items:
+              title: studentClass
+              description: student class for homework create
+              type: object
+              properties:
+               classId:
+                type: integer
+                format: int64
+                description: Student Class Id
+               className:
+                type: string
+                description: Student Class Name
+       studentSections:
+             type: array
+             description: students classes for homework
+        
+             items:
+              title: studentSetionInfo
+              description: student section for homework create
+              type: object
+              properties:
+               sectionId:
+                type: integer
+                format: int64
+                description: Student Section Id
+               sectionName:
+                type: string
+                description: Student Section Name          
+       studentBatches:
+             type: array
+             description: students batches for homework
+             items:
+              title: studentAssignBatch
+              description: student batches for homework create
+              type: object
+              properties:
+               batchId:
+                type: integer
+                format: int64
+                description: Student batch Id
+               batchName:
+                type: string
+                description: Student batch Name
+       studentOrientaion:
+             type: array
+             description: students Orientation for homework
+             items:
+              title: studentOrientaion
+              description: student Orientation for homework create
+              type: object
+              properties:
+               orientaionId:
+                type: integer
+                format: int64
+                description: Student Orientation Id
+               orientationName:
+                type: string
+                description: Student Orientation Name
+       createdby:
+         type: string
+         description: created by
+       createdOn:
+         type: string
+         description: created on  
+       homeWorkId:
+         type: integer
+         format: int64
+         description: homeWorkId
+       homeWorkName:
+         type: string
+         description: homeWorkName  
+       homeWorkType:
+         type: string
+         description: homeWorkTyp
+       homeWorkStatus:
+         type: string
+         description: homeWorkStatus
+       homeWorkSubject:
+         type: string
+         description: homeWorkSubject   
+      
+       description:
+         type: string
+         description: homework description
+       startDate:
+         type: string
+         description: homework startDate
+       endDate:
+         type: string
+         description: homework endDate
+
+       assignQuestions:
+        type: array
+        description: assignment question files
+
+        items:
+          title: assignQuestions
+          description: assignment question files
+          type: object
+          properties:
+            assignmentFiles:
+              type: string
+              description: assignment Files
+            name:
+              type: string
+              description: assignment name
+            fileSize:
+              type: number
+              description: assignment file Size
+            fileType:
+              type: string
+              description: assignment File Type
+       
+       assignmentTestPapers:
+
+         type: array
+         description: assignment question files
+         items:
+              $ref: "#/definitions/assignmentTestPaper"
+     
+  fileComments:
+      type: object
+      properties:
+      
+       fileComment:
+        type: array
+        description: assignment file based comments by teacher 
+
+        items:
+          title: fileComment
+          description: assignment file based comments by teacher 
+          type: object
+          properties:
+            assignmentFileId:
+             type: integer
+             format: int64
+             description: assignment name
+            comment:
+              type: string
+              description: assignment name
+  studentList:
+    type: "object"
+    properties:
+      admNo:
+        type: "string"
+      appNo:
+        type: "string"
+      surname:
+        type: "string"
+      name:
+        type: "string"
+      gender:
+        type: "string"
+      fatherName:
+        type: "string"
+      motherName:
+        type: "string"
+      dob:
+        type: "string"
+      courseFeeId:
+        type: "integer"
+        format: "int32"  
+      campusId:
+        type: "integer"
+        format: "int32"
+      classId:
+        type: "integer"
+        format: "int32"
+      programId:
+        type: "integer"
+        format: "int32"
+      batchId:
+        type: "integer"
+        format: "int32"
+      sectionId:
+        type: "integer"
+        format: "int32" 
+      status:
+        type: "string"
+    xml:
+      name: "studentList"    
+  students:
+    type: "object"
+    properties:
+      success:
+        type: boolean
+      Students:
+        type: array
+        items:
+          $ref: '#/definitions/studentList'
+    xml:
+      name: "students" 
+  EmployeeInfo:
+    type: "object"
+    properties:
+      employeeId:
+        type: "integer"
+        format: "int32"
+      payrollId:
+        type: "string"
+      tempPayrollId:
+        type: "string"
+      employeeName:
+        type: "string"
+      doB:
+        type: "string"
+        format: "date"
+        example: "yyyy-MM-dd"
+      doj:
+        type: "string"
+        format: "date"
+        example: "yyyy-MM-dd"
+      dol:
+        type: "string"
+        format: "date"
+        example: "yyyy-MM-dd"
+      building:
+        $ref: '#/definitions/BuildingInfo'
+      gender:
+        type: "string"
+      aadharNo:
+        type: "string"
+      aadharEnrollNo:
+        type: "string"
+      bloodGroup:
+        type: "string"
+      email:
+        type: "string"
+      mobileNo:
+        type: "integer"
+        format: "int64"
+      caste:
+        type: "string"
+      religion:
+        type: "string"
+      maritalStatus:
+        type: "string"
+      proposedCtc:
+        type: "string"
+      ctc:
+        type: "string"
+      panNo:
+        type: "string"
+      sscNo:
+        type: "string"
+      optPf:
+        type: "boolean"
+      pfNo:
+        type: "string"
+      pfJoinDate:
+        type: "string"
+        format: "date"
+        example: "yyyy-MM-dd"
+      optEsi:
+        type: "boolean"
+      esiNo:
+        type: "string"
+      uanNo:
+        type: "string"
+      checkList:
+        type: "string"
+      organization:
+        $ref: '#/definitions/EmpOrganizationInfo'
+      designation:
+        $ref: '#/definitions/DesignationInfo'
+      costCenter:
+        $ref: '#/definitions/CostCenterInfo'
+      subject:
+        $ref: '#/definitions/EmpSubjectInfo'
+      grade:
+        $ref: '#/definitions/GradeInfo'
+      degree:
+        $ref: '#/definitions/DegreeInfo'
+      managerPayroll:
+        type: "string"
+      managerName:
+        type: "string"
+      joiningAs:
+        type: "string"
+      replacementEmployeePayroll:
+        type: "string"
+      replacementEmployeeName:
+        type: "string"
+      workingType:
+        type: "string"
+      modeOfHiring:
+        type: "string"
+      referenceEmployeePayroll:
+        type: "string"
+      referenceEmployeeName:
+        type: "string"
+      hiredEmployeePayroll:
+        type: "string"
+      hiredEmployeeName:
+        type: "string"
+      experience:
+        type: "number"
+        format: "float"
+      accountHolderName:
+        type: "string"
+      personalAccountNo:
+        type: "string"
+      personalAccountBankName:
+        type: "string"
+      personalAccountNoIfscCode:
+        type: "string"
+      prevEmployeePayroll:
+        type: "string"
+      prevEsiNo:
+        type: "string"
+      prevUanNo:
+        type: "string"
+      employeeStatus:
+        $ref: '#/definitions/EmployeeStatusInfo'
+    xml:
+      name: "EmployeeInfo"
+  EmployeeStatusInfo:
+    type: "object"
+    required: [ employeeStatusId,employeeStatus,displayStatus,status ]
+    properties:
+      employeeStatusId:
+        type: "integer"
+        format: "int32"
+      employeeStatus:
+        type: "string"
+      displayStatus:
+        type: "string"
+      status:
+        type: "boolean"
+    xml:
+      name: "EmployeeStatusInfo"
+  DesignationInfo:
+    type: "object"
+    properties:
+      designationId:
+        type: "integer"
+        format: "int32"
+      designationName:
+        type: "string"
+      department:
+        $ref: '#/definitions/DepartmentInfo'
+      status:
+        type: "boolean"
+    xml:
+      name: "DesignationInfo"
+  DepartmentInfo:
+    type: "object"
+    properties:
+      derpartmentId:
+        type: "integer"
+        format: "int32"
+      departmentName:
+        type: "string"
+      employeeType:
+        $ref: '#/definitions/EmployeeTypeInfo'
+      status:
+        type: "boolean"
+    xml:
+      name: "DepartmentInfo"
+  EmployeeTypeInfo:
+    type: "object"
+    required: [ employeeTypeId,employeeType,status ]
+    properties:
+      employeeTypeId:
+        type: "integer"
+        format: "int32"
+      employeeType:
+        type: "string"
+      status:
+        type: "boolean"
+    xml:
+      name: "EmployeeTypeInfo"
+  DegreeInfo:
+    type: "object"
+    properties:
+      degreeId:
+        type: "integer"
+        format: "int32"
+      degree:
+        type: "string"
+      qualification:
+        $ref: '#/definitions/QualificationInfo'
+      status:
+        type: "boolean"
+    xml:
+      name: "DegreeInfo"
+  QualificationInfo:
+    type: "object"
+    required: [ qualificationId,qualification,status ]
+    properties:
+      qualificationId:
+        type: "integer"
+        format: "int32"
+      qualification:
+        type: "string"
+      status:
+        type: "boolean"
+    xml:
+      name: "QualificationInfo"
+  GradeInfo:
+    type: "object"
+    required: [ gradeId,gradeName,status ]
+    properties:
+      gradeId:
+        type: "integer"
+        format: "int32"
+      gradeName:
+        type: "string"
+      status:
+        type: "boolean"
+    xml:
+      name: "GradeInfo"
+  EmpSubjectInfo:
+    type: "object"
+    properties:
+      subjectId:
+        type: "integer"
+        format: "int32"
+      subjectName:
+        type: "string"
+    xml:
+      name: "SubjectInfo"
+  CostCenterInfo:
+    type: "object"
+    required: [ costCenterId,costCenterName,costCenterCode,status ]
+    properties:
+      costCenterId:
+        type: "integer"
+        format: "int32"
+      costCenterName:
+        type: "string"
+      costCenterCode:
+        type: "string"
+      status:
+        type: "boolean"
+    xml:
+      name: "CostCenterInfo"
+  EmpOrganizationInfo:
+    type: "object"
+    properties:
+      organizationId:
+        type: "integer"
+        format: "int32"
+      organizationName:
+        type: "string"
+    xml:
+      name: "OrganizationInfo"
+  BuildingInfo:
+    type: "object"
+    properties:
+      buildingId:
+        type: "integer"
+        format: "int32"
+      buildingName:
+        type: "string"
+    xml:
+      name: "BuildingInfo"    
+
+  sectionAssignmentTest:
+    type: object
+    properties:
+      subject:
+        type: string
+        description: subject
+      questiontext:
+        type: string
+        description: Question Text
+      choiceData1:
+        type: string
+        description: Choice Data1
+      choiceData2:
+        type: string
+        description: Choice Data2
+      choiceData3:
+        type: string
+        description: Choice Data3
+      choiceData4:
+        type: string
+        description: Choice Data4
+      solutionData:
+        type: string
+        description: Choice Data4
+      questiontype:
+        type: string
+        description: Question type
+      difficultylevel:
+        type: string
+        description: Difficulty Level
+      objective:
+        type: string
+        description: Objective
+      taxonomy:
+        type: string
+        description: Taxonomy
+      relevance:
+        type: string
+        description: Relevance
+      conceptlevel:
+        type: string
+        description: Conceptlevel
+      syllabus:
+        type: string
+        description: syllabus
+      topic:
+        type: string
+        description: Topic
+      subtopic:
+        type: string
+        description: Subtopic
+      branchId:
+        type: string
+        description: BranchId
+      userId:
+        type: string
+        description: UserId
+      stateId:
+        type: string
+        description: StateId
+      status:
+        type: string
+        description: Status
+      approverId:
+        type: string
+        description: ApproverId
+      courses:
+        type: string
+        description: Courses
+      board:
+        type: string
+        description: Board
+      classes:
+        type: string
+        description: Classes
+      chapter:
+        type: string
+        description: Chapterl
+      questionanswer:
+        type: string
+        description: Questionanswer
+      totalmarks:
+        type: string
+        description: Totalmarks
+      negativemarks:
+        type: string
+        description: Negativemarks
+      testtype:
+        type: string
+        description: TestType
+      examtype:
+        type: string
+        description: ExamType
+      isactive:
+        type: string
+        description: IsActive
+      id:
+        type: string
+        description: id
+      questionId:
+        type: integer
+        format: int64
+        description: questionId
+      correct:
+        type: boolean
+        description: question answer correct
+      clearResponse:
+        type: boolean
+        description: clear Response
+      markForReview:
+        type: boolean
+        description: mark for review
+      response:
+        type: string
+        description: response
+      assignmentQuestionId:
+        type: integer
+        format: int64
+        description: assignmentQuestionId
+      studentAssignmentId:
+        type: integer
+        format: int64
+        description: studentAssignmentId
+      isVisited:
+        type: boolean
+        description: isVisited
+      questionGap:
+        type: integer
+        format: int64
+        description: questionGap
+      attemptedTime:
+        type: string
+        description: attemptedTime
+      lmsNegativemarks:
+        type: number
+        format: "float"
+        description: lmsNegativemarks
+      lmsPostiveMarks:
+        type: number
+        format: "float"
+        description: lmsPostiveMarks   
+    xml:
+      name: "sectionAssignmentTest" 
+      
+  assignmentTestPaper:
+    type: "object"
+    properties:
+      sectionId:
+         type: integer
+         format: int64
+         description: Section Id
+      sectionName:
+         type: string
+         description: Section Name
+      correct:
+        type: "integer"
+        format: "int32"
+      Incorrect:
+        type: "integer"
+        format: "int32"
+      Unattempted:
+        type: "integer"
+        format: "int32"
+      positiveMarks:
+        type: number
+        format: "float"
+      negativeMarks:
+        type: number
+        format: "float"
+      AssignmentTestPaper:
+        type: object
+        items:
+          type: object
+          $ref: "#/definitions/sectionAssignmentTest"
+    xml:
+      name: "assignmentTestPaper"
+  SubjectInfo:
+    type: "object"
+    properties:
+        subjectId:
+          type: "integer"
+          format: "int32"
+        subjectName:
+          type: "string"
+        status:
+          type: "boolean"
+    xml:
+      name: "SubjectInfo"
+  teacherQuestionLibraryInfo:
+    type: "object"
+    properties:
+      questionId:
+        type: "integer"
+        format: "int32"
+      text:
+         type: "string"
+      answer:
+         type: "string"
+      positiveMarks:
+        type: "number"
+        format: "float"
+      negativeMarks:
+        type: "number"
+        format: "float"
+      solution:
+        type: "string"
+      hint:
+        type: "string"
+      questionTypeId:
+        type: "integer"
+        format: "int32" 
+      questionStatus:
+        type: "string"
+      subjectId:
+        type: "integer"
+        format: "int32"
+      assignSectionId:
+        type: "integer"
+        format: "int32"
+      questionOption:
+        type: array
+        items:
+          type: "string"
+      status:
+        type: "boolean"
+    xml:
+      name: "teacherQuestionLibrary"
+  getTeacherQuestionLibraryInfo:
+    type: "object"
+    properties:
+      questionId:
+        type: "integer"
+        format: "int32"
+      text:
+         type: "string"      
+      positiveMarks:
+        type: "number"
+        format: "float"
+      negativeMarks:
+        type: "number"
+        format: "float"
+      solution:
+        type: "string"
+      hint:
+        type: "string"
+      questionTypeId:
+        type: "integer"
+        format: "int32" 
+      questionStatus:
+        type: "string"
+      subjectId:
+        type: "integer"
+        format: "int64"
+      assignSectionId:
+        type: "integer"
+        format: "int64"
+      questionOption:
+          type: array
+          items:
+            $ref: "#/definitions/questionOptionInfo"      
+    xml:
+      name: "getTeacherQuestionLibraryInfo"
+  questionOptionInfo:
+    type: "object"
+    properties:
+        optionId:
+          type: "integer"
+          format: "int32"
+        option:
+          type: "string"
+        answer:
+          type: "boolean"
+    xml:
+      name: "questionOptionInfo"    
+
+  Error:
+    description: Schema for API errors.
+    type: object
+    properties:
+      status:
+        type: integer
+        description: original HTTP error code, should be consistent with the response
+          HTTP code
+        minimum: 100
+        maximum: 599
+      code:
+        type: string
+        description: 'The error code, in screaming snake case: eg PAYLOAD_VALIDATION_ERROR'
+        pattern: "^[A-Z]+(_[A-Z]+)*$"
+      message:
+        type: string
+        description: descriptive error message for debugging
+      moreInfo:
+        type: string
+        format: uri
+        description: link to documentation to investigate further and finding support
+      details:
+        type: array
+        description: list of problems causing this error
+        items:
+          title: errorDetail
+          description: schema for specific error cause
+          type: object
+          properties:
+            field:
+              type: string
+              description: JSON object notation specifying the element in the request
+                payload causing the error. eg company.entitlements[3]
+            code:
+              type: string
+              description: 'The error code detail in screaming snake case: eg MISSING_VALUE'
+              pattern: "^[A-Z]+(_[A-Z]+)*$"
+            message:
+              type: string
+              description: descriptive error detail message for debugging
+            moreInfo:
+              type: string
+              format: uri
+              description: link to documentation to investigate further and finding support
+                for error detail
+          required:
+            - code
+    required:
+      - status
+      - code

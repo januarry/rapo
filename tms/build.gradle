@@ -1,0 +1,25 @@
+plugins {
+    id "org.springframework.boot" version "2.5.5"
+    
+}
+
+
+
+
+
+
+
+dependencies{
+    implementation project(':service')
+    implementation project(':controller')
+    implementation project(':data')
+// https://mvnrepository.com/artifact/javax.persistence/javax.persistence-api
+   implementation 'javax.persistence:javax.persistence-api:2.2'
+
+    implementation ('org.springframework.boot:spring-boot-starter-web')
+    runtimeOnly 'mysql:mysql-connector-java'
+   implementation ('org.flywaydb:flyway-core')
+
+
+
+}

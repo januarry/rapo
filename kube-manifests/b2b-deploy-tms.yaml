@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: tms-api
+    version: v1
+  name: tms-api
+  namespace: lms-stg
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tms-api
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: tms-api
+        version: v1
+    spec:
+      containers:
+      - image: CONTAINER_TMS
+        name: tms-api
+        resources:
+          limits:
+            cpu: "500m"
+            memory: "900Mi"
+          requests:
+            cpu: "250m"
+            memory: "750Mi"

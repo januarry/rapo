@@ -1,0 +1,7 @@
+rootProject.name = 'lms'
+include 'data'
+include 'service'
+include 'api'
+include 'tms'
+include 'controller'
+

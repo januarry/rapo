@@ -1,0 +1,17 @@
+dependencies {
+   
+    implementation project(':api')
+    implementation project(':data')
+    implementation project(':service')
+    compileOnly 'org.projectlombok:lombok'
+    implementation ('org.springframework.boot:spring-boot-starter-web:2.5.5')
+    annotationProcessor 'org.projectlombok:lombok'
+    implementation group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
+    implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
+    implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.5.11'
+    // implementation group: 'org.mongodb', name: 'mongo-java-driver', version: '3.12.10' 
+    implementation group: 'javax.transaction', name: 'javax.transaction-api', version: '1.2'
+
+implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '2.5.6'
+}
+
